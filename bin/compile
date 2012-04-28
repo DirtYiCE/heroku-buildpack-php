@@ -29,6 +29,9 @@ mv $CACHE_DIR/www .
 if [ -f www/Procfile ]; then
   mv www/Procfile .
 fi
+if [ -f www/compile.sh ]; then
+  mv www/compile.sh .
+fi
 
 APACHE_URL="https://s3.amazonaws.com/php-lp/apache-$APACHE_VERSION.tar.gz"
 echo "-----> Bundling Apache version $APACHE_VERSION"
@@ -45,6 +48,11 @@ cp $LP_DIR/conf/php.ini php
 # make php available on bin
 mkdir -p bin
 ln -s /app/php/bin/php bin/php
+
+if [ -f compile.sh ]; then
+  chmod +x compile.sh
+  ./compile.sh
+fi
 
 cat >>boot.sh <<EOF
 for var in \`env|cut -f1 -d=\`; do
